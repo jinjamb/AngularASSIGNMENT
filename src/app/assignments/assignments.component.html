@@ -1,0 +1,38 @@
+<h2>{{titre}}</h2>
+<h3>Ici en liste</h3>
+<p>Nombre d'assignments : {{assignments.length}}</p>
+    <ul>
+        @for(a of assignments; track a.nom) {
+            <div>
+                @if(a.rendu) {
+                    <li appRendu>
+                        {{a.nom}}, A ETE RENDU LE {{a.dateDeRendu}}
+                    </li>
+                } @else {
+                    <li appNonRendu>
+                        {{a.nom}}, a rendre le {{a.dateDeRendu}}, N'EST PAS ENCORE RENDU!
+                    </li>
+                }
+            </div>
+        }
+    </ul>
+<h3>Ici en tableau</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Date de rendu</th>
+            <th>Rendu</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(a of assignments; track a.nom) {
+        <tr>
+            <td>{{a.nom}}</td>
+            <td>{{a.dateDeRendu}}</td>
+            <td>{{a.rendu}}</td>
+        </tr>
+        }
+    </tbody>
+
+</table>
