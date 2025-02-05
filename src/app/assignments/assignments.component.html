@@ -1,6 +1,9 @@
 <h2>{{titre}}</h2>
 <h3>Ajout de devoir</h3>
-<form ngForm #addAssignmentForm (submit)="onSubmit($event)" class="form">
+<form ngForm #addAssignmentForm 
+      (submit)="onSubmit($event); addAssignmentForm.reset()" 
+      class="form"
+>
     <mat-form-field>
         <input matInput 
                placeholder="Nom du devoir" 
@@ -27,21 +30,30 @@
 
 <h3>Ici en liste</h3>
 <p>Nombre d'assignments : {{assignments.length}}</p>
-    <ul>
+    <mat-list>
         @for(a of assignments; track a.nom) {
-            <div>
+            <h3 mat-sub-header>{{a.dateDeRendu | date:'d/M/YY'}}</h3>   
+            <div (click)="onAssignmentClique(a)">
                 @if(a.rendu) {
-                    <li appRendu>
-                        {{a.nom}}, A ETE RENDU LE {{a.dateDeRendu}}
-                    </li>
+                    <mat-list-item appRendu>
+                        Devoir initulé {{a.nom}} a été rendu.
+                    </mat-list-item>
                 } @else {
-                    <li appNonRendu>
-                        {{a.nom}}, a rendre le {{a.dateDeRendu}}, N'EST PAS ENCORE RENDU!
-                    </li>
+                    <mat-list-item appNonRendu>
+                        le devoir {{a.nom}} n'a pas été rendu!
+                    </mat-list-item>
                 }
             </div>
+            <mat-divider></mat-divider>
         }
-    </ul>
+    </mat-list>
+    <!--
+    @if(assignmentSelectionne) {
+        <h3>Assignment sélectionné = {{assignmentSelectionne.nom}}</h3>
+    }
+    -->
+    <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>
+    
 <h3>Ici en tableau</h3>
 <table>
     <thead>
@@ -55,7 +67,7 @@
         @for(a of assignments; track a.nom) {
         <tr>
             <td>{{a.nom}}</td>
-            <td>{{a.dateDeRendu}}</td>
+            <td>{{a.dateDeRendu|date:'d/M/YY'}}</td>
             <td>{{a.rendu}}</td>
         </tr>
         }
