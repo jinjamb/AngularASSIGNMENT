@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { Assignment } from '../assignment.model';
 import { AssignmentsService } from '../../shared/assignments.service';
+import { Router } from '@angular/router';
 
 @Component({
   providers: [provideNativeDateAdapter()],
@@ -17,18 +18,12 @@ import { AssignmentsService } from '../../shared/assignments.service';
   styleUrl: './add-assignment.component.css'
 })
 export class AddAssignmentComponent {
-  // nouvelAssignmentEvent est un événement que l'on va envoyer vers 
-  // le père. Le nom de l'événement c'est nouvelAssignmentEvent
-  // et c'est aussi la variable qui va émettre l'événement
-  @Output()
-  nouvelAssignmentEvent = new EventEmitter<Assignment>();
-  
   // Pour le formulaire d'ajout
   nomDevoir = "";
   dateDeRendu!:Date;
 
-  constructor(private assignmentsService:AssignmentsService) {}
-  
+  constructor(private assignmentsService:AssignmentsService, private router:Router) {}
+
 onSubmit(event:any) {
     console.log(`On a soumis le formulaire nom = ${this.nomDevoir}, 
       dateDeRendu = ${this.dateDeRendu}`);
@@ -45,17 +40,14 @@ onSubmit(event:any) {
       a.dateDeRendu = this.dateDeRendu;
       a.rendu = false;
 
-      // On ajoute le nouvel assignment au tableau
-      //this.assignments.push(nouvelAssignment);
-
       // On envoie l'assignment vers le service pour insertion
       this.assignmentsService.addAssignment(a)
       .subscribe(message => {
         console.log(message);
 
-        // On envoie un événement vers le père, et l'event
-        // va contenir le nouvel assignment que l'on veut ajouter
-        this.nouvelAssignmentEvent.emit(a);
+       // On va naviguer vers la page qui affiche la liste des assignments
+       // c'est la route par défaut (/ ou /home)
+       this.router.navigate(['/home']);
       });
   }
 

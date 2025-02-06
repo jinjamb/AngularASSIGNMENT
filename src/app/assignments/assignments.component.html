@@ -1,14 +1,13 @@
 <h2>{{titre}}</h2>
-@if(formVisible) {
-    <app-add-assignment (nouvelAssignmentEvent)="onAddAssignment($event)"></app-add-assignment>
-} @else {
+<a routerLink="/add">
     <button mat-flat-button 
-            color="accent" 
-            (click)="formVisible=true"
+            color="accent"
     >
         Ajouter un devoir
    </button>
-    <h3>Ici en liste</h3>
+</a>
+
+<h3>Ici en liste</h3>
 <p>Nombre d'assignments : {{assignments.length}}</p>
     <mat-list>
         @for(a of assignments; track a.nom) {
@@ -54,6 +53,6 @@
     </tbody>
 
 </table>
-}
+
 
 

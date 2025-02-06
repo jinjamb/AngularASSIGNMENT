@@ -1,4 +1,11 @@
-<h1>{{titre}}</h1>
+<h1>
+  <nav>
+    <a routerLink="/home">{{titre}}</a>
+  </nav>
+</h1>
 
-<app-assignments></app-assignments>
+<!-- On va afficher le composant correspondant 
+     à la route active
+-->
+<router-outlet></router-outlet>
 

@@ -9,19 +9,18 @@ import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { AssignmentsService } from '../shared/assignments.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-assignments',
   imports: [CommonModule, RenduDirective, NonRenduDirective, 
     MatListModule, MatDividerModule,
    AssignmentDetailComponent, MatButtonModule,
-    AddAssignmentComponent],
+   RouterLink],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
 })
 export class AssignmentsComponent implements OnInit {
   titre = 'Liste des assignments';
-  // Visibilité du formulaire d'ajout
-  formVisible = false;
   
   // Pour le détail, on mémorise l'assignment sélectionné
   assignmentSelectionne!:Assignment;
@@ -54,16 +53,6 @@ export class AssignmentsComponent implements OnInit {
     console.log("On a cliqué sur " + assignmentClique.nom);
     this.assignmentSelectionne = assignmentClique;
 
-  }
-
-  // Ecouteur de l'événement envoyé par le fils
-  onAddAssignment(newAssignment:Assignment) {
-    const message = `Dans l'écouteur de (nouvelAssignmentEvent) un 
-    nouvel assignment été ajouté par le fils: ${newAssignment.nom}, 
-    on peut cacher le formulaire et afficher la liste`;
-    console.log(message);
-
-    this.formVisible = false; 
   }
 
   getColor(a:any):string {
