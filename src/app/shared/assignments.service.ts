@@ -8,16 +8,19 @@ import { Observable, of } from 'rxjs';
 export class AssignmentsService {
 assignments:Assignment[] = [
     {
+      id:1,
       nom: 'TP Angular',
       dateDeRendu: new Date('2024-3-17'),
       rendu: false
     },
     {
+      id:2,
       nom: 'TP Mr Galli',
       dateDeRendu: new Date('2023-12-17'),
       rendu: true
     },
     {
+      id:3,
       nom: 'Projet J2EE',
       dateDeRendu: new Date('2024-4-15'),
       rendu: false
@@ -33,6 +36,18 @@ assignments:Assignment[] = [
 
     // of transforme un objet JavaScript en un Observable
     return of(this.assignments);
+  }
+
+  getAssignment(id:number):Observable<Assignment|undefined> {
+    // On récupère l'assignment dont l'id est égal à id
+    const assignment:Assignment|undefined = this.assignments.find(a => {
+      if (a.id === id) 
+        return a;
+      else 
+        return null;
+   });
+
+   return of(assignment);
   }
 
   addAssignment(assignment:Assignment):Observable<string> {

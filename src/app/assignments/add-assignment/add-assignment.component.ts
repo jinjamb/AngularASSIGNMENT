@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -17,13 +17,15 @@ import { Router } from '@angular/router';
   templateUrl: './add-assignment.component.html',
   styleUrl: './add-assignment.component.css'
 })
-export class AddAssignmentComponent {
+export class AddAssignmentComponent  {
   // Pour le formulaire d'ajout
   nomDevoir = "";
   dateDeRendu!:Date;
 
-  constructor(private assignmentsService:AssignmentsService, private router:Router) {}
+  constructor(private assignmentsService:AssignmentsService, 
+              private router:Router) {}
 
+  
 onSubmit(event:any) {
     console.log(`On a soumis le formulaire nom = ${this.nomDevoir}, 
       dateDeRendu = ${this.dateDeRendu}`);
@@ -36,6 +38,8 @@ onSubmit(event:any) {
       }
 
       let a = new Assignment();
+      // On génère un id aléatoire (peu de chance d'avoir le même id)
+      a.id = Math.round(Math.random() * 100000000);
       a.nom = this.nomDevoir;
       a.dateDeRendu = this.dateDeRendu;
       a.rendu = false;

@@ -21,10 +21,7 @@ import { RouterLink } from '@angular/router';
 })
 export class AssignmentsComponent implements OnInit {
   titre = 'Liste des assignments';
-  
-  // Pour le détail, on mémorise l'assignment sélectionné
-  assignmentSelectionne!:Assignment;
-  assignments:Assignment[] = [];
+    assignments:Assignment[] = [];
 
   // Attention, pour l'injection de service, mettre en private !!! Sinon
   // ça ne marche pas
@@ -49,12 +46,6 @@ export class AssignmentsComponent implements OnInit {
     */
   }
   
-  onAssignmentClique(assignmentClique:Assignment) {
-    console.log("On a cliqué sur " + assignmentClique.nom);
-    this.assignmentSelectionne = assignmentClique;
-
-  }
-
   getColor(a:any):string {
     if(a.rendu) return 'green';
     else
