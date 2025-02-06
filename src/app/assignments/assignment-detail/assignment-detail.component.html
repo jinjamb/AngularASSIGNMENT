@@ -12,7 +12,11 @@
                     Rendu
                     </mat-checkbox>
                 }
-                <button mat-raised-button color="primary" (click)="onDeleteAssignment()">DELETE ASSIGNMENT</button>
+                <a routerLink="/assignments/{{assignmentTransmis.id}}/edit">
+                    <button mat-raised-button color="primary">EDIT</button>
+                </a>
+
+                <button mat-raised-button color="primary" (click)="onDeleteAssignment()">DELETE</button>
         </mat-card-actions>
       </mat-card>
 }
