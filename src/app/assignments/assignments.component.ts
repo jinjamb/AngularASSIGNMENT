@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { AssignmentsService } from '../shared/assignments.service';
 @Component({
   selector: 'app-assignments',
   imports: [CommonModule, RenduDirective, NonRenduDirective, 
@@ -24,27 +25,23 @@ export class AssignmentsComponent implements OnInit {
   
   // Pour le détail, on mémorise l'assignment sélectionné
   assignmentSelectionne!:Assignment;
+  assignments:Assignment[] = [];
 
-  assignments:Assignment[] = [
-    {
-      nom: 'TP Angular',
-      dateDeRendu: new Date('2024-3-17'),
-      rendu: false
-    },
-    {
-      nom: 'TP Mr Galli',
-      dateDeRendu: new Date('2023-12-17'),
-      rendu: true
-    },
-    {
-      nom: 'Projet J2EE',
-      dateDeRendu: new Date('2024-4-15'),
-      rendu: false
-    }
-  ]
+  // Attention, pour l'injection de service, mettre en private !!! Sinon
+  // ça ne marche pas
+  constructor(private assignementsService:AssignmentsService) {}
 
   ngOnInit() {
     console.log("ngOnInit appelé lors de l'instanciation du composant");
+
+    // On récupère les assignments depuis le service
+    this.assignementsService.getAssignments()
+    .subscribe(assignments => {
+      this.assignments = assignments;
+      console.log("Données reçues dans le subscribe");
+    });
+    console.log("APRES L'APPEL AU SERVICE");
+
     /*
     // on veut passer la propriété ajoutActive à true au bout de 3 secondes
     setTimeout(() => {
@@ -65,11 +62,15 @@ export class AssignmentsComponent implements OnInit {
     nouvel assignment été reçu du fils: ${newAssignment.nom}`;
     console.log(message);
 
-    this.assignments.push(newAssignment);
-
-    // On canche le formulaire d'ajout et on rend la liste
-    // des assignments visible
-    this.formVisible = false;
+    //this.assignments.push(newAssignment);
+    this.assignementsService.addAssignment(newAssignment)
+    .subscribe(message => {
+      // ON PEUT TRAITER LES DONNES...
+      console.log(message);
+      // On canche le formulaire d'ajout et on rend la liste
+      // des assignments visible
+      this.formVisible = false;
+    });
   }
 
   getColor(a:any):string {
