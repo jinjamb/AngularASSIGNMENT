@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { Assignment } from '../assignment.model';
+import { AssignmentsService } from '../../shared/assignments.service';
 
 @Component({
   providers: [provideNativeDateAdapter()],
@@ -25,6 +26,8 @@ export class AddAssignmentComponent {
   // Pour le formulaire d'ajout
   nomDevoir = "";
   dateDeRendu!:Date;
+
+  constructor(private assignmentsService:AssignmentsService) {}
   
 onSubmit(event:any) {
     console.log(`On a soumis le formulaire nom = ${this.nomDevoir}, 
@@ -45,9 +48,15 @@ onSubmit(event:any) {
       // On ajoute le nouvel assignment au tableau
       //this.assignments.push(nouvelAssignment);
 
-      // On envoie un événement vers le père, et l'event
-      // va contenir le nouvel assignment que l'on veut ajouter
-      this.nouvelAssignmentEvent.emit(a);
+      // On envoie l'assignment vers le service pour insertion
+      this.assignmentsService.addAssignment(a)
+      .subscribe(message => {
+        console.log(message);
+
+        // On envoie un événement vers le père, et l'event
+        // va contenir le nouvel assignment que l'on veut ajouter
+        this.nouvelAssignmentEvent.emit(a);
+      });
   }
 
 }

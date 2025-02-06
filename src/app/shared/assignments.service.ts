@@ -38,7 +38,7 @@ assignments:Assignment[] = [
   addAssignment(assignment:Assignment):Observable<string> {
     this.assignments.push(assignment);
 
-    return of("Assignment ajouté !");
+    return of("Service:addAssignment: Assignment ajouté !");
   }
 
   updateAssignment(assignment:Assignment):Observable<string> {
@@ -46,6 +46,15 @@ assignments:Assignment[] = [
     // dans un tableau, il n'y a rien à faire, l'assignment
     // passé en paramètres est déjà dans le tableau, si on a modifié
     // par exemple son nom, c'est déjà modifié dans le tableau
-    return of("Assignment mis à jour !");
+    return of("Service:updateAssignment: Assignment mis à jour !");
+  }
+
+  deleteAssignment(assignment:Assignment):Observable<string> {
+    // On supprime l'assignment passé en paramètres
+    // du tableau des assignments
+    const index = this.assignments.indexOf(assignment);
+    this.assignments.splice(index, 1);
+
+    return of("Service:deleteAssignment: Assignment supprimé !");
   }
 }

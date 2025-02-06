@@ -59,18 +59,11 @@ export class AssignmentsComponent implements OnInit {
   // Ecouteur de l'événement envoyé par le fils
   onAddAssignment(newAssignment:Assignment) {
     const message = `Dans l'écouteur de (nouvelAssignmentEvent) un 
-    nouvel assignment été reçu du fils: ${newAssignment.nom}`;
+    nouvel assignment été ajouté par le fils: ${newAssignment.nom}, 
+    on peut cacher le formulaire et afficher la liste`;
     console.log(message);
 
-    //this.assignments.push(newAssignment);
-    this.assignementsService.addAssignment(newAssignment)
-    .subscribe(message => {
-      // ON PEUT TRAITER LES DONNES...
-      console.log(message);
-      // On canche le formulaire d'ajout et on rend la liste
-      // des assignments visible
-      this.formVisible = false;
-    });
+    this.formVisible = false; 
   }
 
   getColor(a:any):string {
