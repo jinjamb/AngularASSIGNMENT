@@ -7,14 +7,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
-import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { AssignmentsService } from '../shared/assignments.service';
 import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-assignments',
   imports: [CommonModule, RenduDirective, NonRenduDirective, 
-    MatListModule, MatDividerModule,
-   AssignmentDetailComponent, MatButtonModule,
+    MatListModule, MatDividerModule, MatButtonModule,
    RouterLink],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'

@@ -1,75 +1,49 @@
 import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentsService {
-assignments:Assignment[] = [
-    {
-      id:1,
-      nom: 'TP Angular',
-      dateDeRendu: new Date('2024-3-17'),
-      rendu: false
-    },
-    {
-      id:2,
-      nom: 'TP Mr Galli',
-      dateDeRendu: new Date('2023-12-17'),
-      rendu: true
-    },
-    {
-      id:3,
-      nom: 'Projet J2EE',
-      dateDeRendu: new Date('2024-4-15'),
-      rendu: false
-    }
-  ];
+  backendURL = 'http://localhost:8010/api/assignments';
+
+assignments:Assignment[] = [];
   
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
   getAssignments():Observable<Assignment[]> {
     console.log("Service:getAssignments appelée !");
-    // plus tard on enverra une requête 
-    // ASYNCHRONE vers un Web Service RESTful
-
-    // of transforme un objet JavaScript en un Observable
-    return of(this.assignments);
+    
+    // On utilise la methode get du service HttpClient
+    // pour récupérer les données depuis le backend
+    return this.http.get<Assignment[]>(this.backendURL);
   }
 
   getAssignment(id:number):Observable<Assignment|undefined> {
-    // On récupère l'assignment dont l'id est égal à id
-    const assignment:Assignment|undefined = this.assignments.find(a => {
-      if (a.id === id) 
-        return a;
-      else 
-        return null;
-   });
+    console.log("Service:getAssignment appelée avec id = " + id);
+    // route = /api/assignments/:id côté serveur !
+    let backendURL = 'http://localhost:8010/api/assignments' + '/' + id;
 
-   return of(assignment);
+    return this.http.get<Assignment>(backendURL);
   }
 
   addAssignment(assignment:Assignment):Observable<string> {
-    this.assignments.push(assignment);
-
-    return of("Service:addAssignment: Assignment ajouté !");
+    // On ajoute l'assignment passé en paramètres
+    // en l'envoyant par POST au backend
+     return this.http.post<string>(this.backendURL, assignment);
   }
 
   updateAssignment(assignment:Assignment):Observable<string> {
-    // Pour le moment, tant qu'on est avec des données
-    // dans un tableau, il n'y a rien à faire, l'assignment
-    // passé en paramètres est déjà dans le tableau, si on a modifié
-    // par exemple son nom, c'est déjà modifié dans le tableau
-    return of("Service:updateAssignment: Assignment mis à jour !");
+    // On met à jour l'assignment passé en paramètres
+    // en l'envoyant par PUT au backend
+    return this.http.put<string>(this.backendURL, assignment);
   }
 
   deleteAssignment(assignment:Assignment):Observable<string> {
     // On supprime l'assignment passé en paramètres
-    // du tableau des assignments
-    const index = this.assignments.indexOf(assignment);
-    this.assignments.splice(index, 1);
-
-    return of("Service:deleteAssignment: Assignment supprimé !");
+    // en l'envoyant par DELETE au backend
+    return this.http.delete<string>(this.backendURL + '/' + assignment.id);
   }
 }
