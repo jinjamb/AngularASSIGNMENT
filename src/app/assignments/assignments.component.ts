@@ -30,8 +30,8 @@ export class AssignmentsComponent implements OnInit {
 
     // On récupère les assignments depuis le service
     this.assignementsService.getAssignments()
-    .subscribe(assignments => {
-      this.assignments = assignments;
+    .subscribe(data => {
+      this.assignments = data.docs;
       console.log("Données reçues dans le subscribe");
     });
     console.log("APRES L'APPEL AU SERVICE");

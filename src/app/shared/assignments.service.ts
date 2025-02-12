@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
+import { bdInitialAssignments } from './data';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ assignments:Assignment[] = [];
   
   constructor(private http:HttpClient) { }
 
-  getAssignments():Observable<Assignment[]> {
+  getAssignments():Observable<any> {
     console.log("Service:getAssignments appelée !");
     
     // On utilise la methode get du service HttpClient
@@ -21,10 +23,10 @@ assignments:Assignment[] = [];
     return this.http.get<Assignment[]>(this.backendURL);
   }
 
-  getAssignment(id:number):Observable<Assignment|undefined> {
-    console.log("Service:getAssignment appelée avec id = " + id);
+  getAssignment(_id:string):Observable<Assignment|undefined> {
+    console.log("Service:getAssignment appelée avec id = " + _id);
     // route = /api/assignments/:id côté serveur !
-    let backendURL = 'http://localhost:8010/api/assignments' + '/' + id;
+    let backendURL = 'http://localhost:8010/api/assignments' + '/' + _id;
 
     return this.http.get<Assignment>(backendURL);
   }
@@ -44,6 +46,45 @@ assignments:Assignment[] = [];
   deleteAssignment(assignment:Assignment):Observable<string> {
     // On supprime l'assignment passé en paramètres
     // en l'envoyant par DELETE au backend
-    return this.http.delete<string>(this.backendURL + '/' + assignment.id);
+    return this.http.delete<string>(this.backendURL + '/' + assignment._id);
   }
+
+  // Pour la génération de données de test
+  peuplerBD() {
+    bdInitialAssignments.forEach(a => {
+      // on va construire un nouvel assignment
+      let nouvelAssignment = new Assignment();
+      nouvelAssignment.nom = a.nom;
+      nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
+      nouvelAssignment.rendu = a.rendu;
+
+      // J'appelle le service d'insertion d'un assignment
+      // et je l'insère dans la base de données via le 
+      // backend
+      this.addAssignment(nouvelAssignment)
+      .subscribe(message => {
+        console.log(message);
+      });
+    });
+  }
+
+  // VERSION AMELIOREE QUI RENVOIE UN OBSERVABLE ! Et qui permet donc
+  // de savoir quand toutes les insertions sont terminées
+  peuplerBDavecForkJoin():Observable<any> {
+    let appelsVersAddAssignment:Observable<any>[] = [];
+ 
+    bdInitialAssignments.forEach(a => {
+      const nouvelAssignment = new Assignment();
+      nouvelAssignment.nom = a.nom;
+      nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
+      nouvelAssignment.rendu = a.rendu;
+ 
+      appelsVersAddAssignment.push(this.addAssignment(nouvelAssignment))
+    });
+ 
+    // On renvoie un observable qui va nous permettre de savoir
+    // quand toutes les insertions sont terminées
+    return forkJoin(appelsVersAddAssignment);
+  }
+ 
 }

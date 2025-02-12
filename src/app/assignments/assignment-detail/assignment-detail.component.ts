@@ -50,11 +50,11 @@ export class AssignmentDetailComponent implements OnInit{
   getAssignment(): void {
     // On récupère l'id dans l'URL. Le + au début est une astuce
     // pour convertir la chaîne de caractères en nombre
-    const id:number = +this.route.snapshot.params['id'];
-    console.log("ID = " + id);
+    const _id:string = this.route.snapshot.params['id'];
+    console.log("ID = " + _id);
     // On utilise le service assignmentsService pour récupérer l'assignment
     // qui a l'id qu'on vient de récupérer de l'URL
-    this.assignmentsService.getAssignment(id)
+    this.assignmentsService.getAssignment(_id)
     .subscribe(a => {
       this.assignmentTransmis = a;
     });

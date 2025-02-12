@@ -38,8 +38,6 @@ onSubmit(event:any) {
       }
 
       let a = new Assignment();
-      // On génère un id aléatoire (peu de chance d'avoir le même id)
-      a.id = Math.round(Math.random() * 100000000);
       a.nom = this.nomDevoir;
       a.dateDeRendu = this.dateDeRendu;
       a.rendu = false;

@@ -10,9 +10,9 @@
 <h3>Ici en liste</h3>
 <p>Nombre d'assignments : {{assignments.length}}</p>
     <mat-list>
-        @for(a of assignments; track a.nom) {
+        @for(a of assignments; track a._id) {
             <nav>
-                <a routerLink="/assignments/{{a.id}}">
+                <a routerLink="/assignments/{{a._id}}">
                     <h3 mat-sub-header>{{a.dateDeRendu | date:'d/M/YY'}}</h3>   
                     <div>
                         @if(a.rendu) {
@@ -40,7 +40,7 @@
         </tr>
     </thead>
     <tbody>
-        @for(a of assignments; track a.nom) {
+        @for(a of assignments; track a._id) {
         <tr>
             <td>{{a.nom}}</td>
             <td>{{a.dateDeRendu|date:'d/M/YY'}}</td>
