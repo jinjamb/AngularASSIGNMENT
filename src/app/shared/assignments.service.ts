@@ -15,12 +15,13 @@ assignments:Assignment[] = [];
   
   constructor(private http:HttpClient) { }
 
-  getAssignments():Observable<any> {
+  getAssignmentsPagines(page:number, limit:number):Observable<any> {
     console.log("Service:getAssignments appelée !");
     
     // On utilise la methode get du service HttpClient
     // pour récupérer les données depuis le backend
-    return this.http.get<Assignment[]>(this.backendURL);
+    const URI = this.backendURL + '?page=' + page + '&limit=' + limit;
+    return this.http.get<Assignment[]>(URI);
   }
 
   getAssignment(_id:string):Observable<Assignment|undefined> {
