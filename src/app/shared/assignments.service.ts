@@ -9,7 +9,9 @@ import { bdInitialAssignments } from './data';
   providedIn: 'root'
 })
 export class AssignmentsService {
-  backendURL = 'http://localhost:8010/api/assignments';
+  //backendURL = 'http://localhost:8010/api/assignments';
+  backendURL = 'https://angularbackm2mbdsesatic2024-2025.onrender.com/api/assignments';
+
 
 assignments:Assignment[] = [];
   
@@ -27,9 +29,9 @@ assignments:Assignment[] = [];
   getAssignment(_id:string):Observable<Assignment|undefined> {
     console.log("Service:getAssignment appelée avec id = " + _id);
     // route = /api/assignments/:id côté serveur !
-    let backendURL = 'http://localhost:8010/api/assignments' + '/' + _id;
+    let URI = this.addAssignment + '/' + _id;
 
-    return this.http.get<Assignment>(backendURL);
+    return this.http.get<Assignment>(URI);
   }
 
   addAssignment(assignment:Assignment):Observable<string> {

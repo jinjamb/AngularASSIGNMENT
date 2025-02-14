@@ -8,18 +8,19 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AssignmentsService } from '../shared/assignments.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-assignments',
   imports: [CommonModule, RenduDirective, NonRenduDirective,
     MatListModule, MatDividerModule, MatButtonModule,
     MatInputModule,MatFormFieldModule,FormsModule,
-    MatTableModule,
+    MatTableModule, MatPaginatorModule,
     RouterLink],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
@@ -40,11 +41,12 @@ export class AssignmentsComponent implements OnInit {
   prevPage = null;
   nextPage = 2;
   // Pour la data table angular
-  displayedColumns: string[] = ['nom', 'dateDeRendu', 'rendu', '_id'];
+  displayedColumns: string[] = ['nom', 'dateDeRendu', 'rendu'];
 
   // Attention, pour l'injection de service, mettre en private !!! Sinon
   // ça ne marche pas
-  constructor(private assignementsService: AssignmentsService) {}
+  constructor(private assignementsService: AssignmentsService,
+              private router: Router) {}
 
   ngOnInit() {
     console.log("ngOnInit appelé lors de l'instanciation du composant");
@@ -98,9 +100,26 @@ export class AssignmentsComponent implements OnInit {
     this.getAssignments();
   }
 
+  // Pour le composant material paginator
+  onPageEvent(event: any) {
+    console.log(event);
+    this.page = event.pageIndex + 1;
+    this.limit = event.pageSize;
+    this.getAssignments();
+  }
+
   getColor(a: any): string {
     if (a.rendu) return 'green';
     else
       return 'red';
+  }
+
+  afficheDetail(row: any) {
+    console.log(row);
+    // On récupère l'id de l'assignment situé dans la colonne _id de la ligne
+    // sélectionnée
+    let id = row._id;
+    // et on utilise le routeur pour afficher le détail de l'assignment
+    this.router.navigate(['/assignments', id]);
   }
 }
