@@ -29,7 +29,7 @@ assignments:Assignment[] = [];
   getAssignment(_id:string):Observable<Assignment|undefined> {
     console.log("Service:getAssignment appelée avec id = " + _id);
     // route = /api/assignments/:id côté serveur !
-    let URI = this.addAssignment + '/' + _id;
+    let URI = this.backendURL + '/' + _id;
 
     return this.http.get<Assignment>(URI);
   }
