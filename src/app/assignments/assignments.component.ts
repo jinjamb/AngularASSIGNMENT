@@ -14,12 +14,13 @@ import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AssignmentsService } from '../shared/assignments.service';
 import { Router, RouterLink } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-assignments',
-  imports: [CommonModule, RenduDirective, NonRenduDirective,
+  imports: [CommonModule, RenduDirective,
     MatListModule, MatDividerModule, MatButtonModule,
-    MatInputModule,MatFormFieldModule,FormsModule,
+    MatInputModule, MatFormFieldModule, FormsModule,
     MatTableModule, MatPaginatorModule,
     RouterLink],
   templateUrl: './assignments.component.html',
@@ -28,8 +29,10 @@ import { Router, RouterLink } from '@angular/router';
 
 export class AssignmentsComponent implements OnInit {
   titre = 'Liste des assignments';
+  formVisible = false;
+  assignmentSelectionne: Assignment | undefined;
   assignments: Assignment[] = [];
-  
+
   // Pour la pagination
   page = 1;
   limit = 4;
@@ -46,9 +49,9 @@ export class AssignmentsComponent implements OnInit {
   // Attention, pour l'injection de service, mettre en private !!! Sinon
   // ça ne marche pas
   constructor(private assignementsService: AssignmentsService,
-              private router: Router) {}
+    private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log("ngOnInit appelé lors de l'instanciation du composant");
 
     // On récupère les assignments depuis le service
@@ -65,20 +68,16 @@ export class AssignmentsComponent implements OnInit {
   getAssignments() {
     this.assignementsService.getAssignmentsPagines(this.page, this.limit)
       .subscribe(data => {
+        console.log(data);
         this.assignments = data.docs;
-        this.page = data.page;
-        this.limit = data.limit;
         this.totalDocs = data.totalDocs;
         this.totalPages = data.totalPages;
         this.pagingCounter = data.pagingCounter;
         this.hasPrevPage = data.hasPrevPage;
         this.hasNextPage = data.hasNextPage;
         this.prevPage = data.prevPage;
-        this.nextPage = data.nextPage;
-
-        console.log("Données reçues dans le subscribe");
+        this.nextPage = data.nextPage
       });
-    console.log("APRES L'APPEL AU SERVICE");
   }
 
   pageSuivante() {
@@ -114,12 +113,27 @@ export class AssignmentsComponent implements OnInit {
       return 'red';
   }
 
-  afficheDetail(row: any) {
-    console.log(row);
-    // On récupère l'id de l'assignment situé dans la colonne _id de la ligne
-    // sélectionnée
-    let id = row._id;
-    // et on utilise le routeur pour afficher le détail de l'assignment
-    this.router.navigate(['/assignments', id]);
+  afficheDetail(assignment: Assignment) {
+    // Make sure assignment and assignment._id are defined before navigating
+    if (assignment && assignment._id) {
+      this.router.navigate(['/assignment', assignment._id]);
+    } else {
+      console.error('Cannot navigate: assignment or assignment._id is undefined', assignment);
+    }
+  }
+
+  generateId(): string {
+    return (this.assignments.length + 1).toString();
+  }
+
+  addAssignment(nom: string, dateDeRendu: Date, rendu: boolean) {
+    const newAssignment: Assignment = {
+      _id: this.generateId(),
+      nom,
+      dateDeRendu,
+      rendu,
+      id: this.generateId()
+    };
+    this.assignments.push(newAssignment);
   }
 }

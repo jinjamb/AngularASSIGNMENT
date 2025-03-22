@@ -10,21 +10,22 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-assignment-detail',
-  imports: [MatCardModule, CommonModule, MatButtonModule, 
+  imports: [MatCardModule, CommonModule, MatButtonModule,
     MatCheckboxModule, RouterLink],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
 })
-export class AssignmentDetailComponent implements OnInit{
+export class AssignmentDetailComponent implements OnInit {
   // Passé sous forme d'attribut dynamique par le composant père
   // dans la déclaration HTML du fils :
   // <assignment-detail [assignmentTransmis]="assignmentSelectionne"></assignment-detail>
   @Input()
-  assignmentTransmis?:Assignment;
+  assignmentTransmis?: Assignment;
+  formVisible: boolean | undefined;
 
-  constructor(private assignmentsService:AssignmentsService, 
-    private route:ActivatedRoute,
-    private router:Router) {}
+  constructor(private assignmentsService: AssignmentsService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     // appelée quand le composant est instancié
@@ -34,7 +35,7 @@ export class AssignmentDetailComponent implements OnInit{
     // exemple : http://localhost:4200/assignment/1?page=1&limit=10&debug=true
     let queries = this.route.snapshot.queryParams;
     console.log(queries);
-    if(queries['debug']) {
+    if (queries['debug']) {
       // etc.
     }
 
@@ -50,44 +51,58 @@ export class AssignmentDetailComponent implements OnInit{
   getAssignment(): void {
     // On récupère l'id dans l'URL. Le + au début est une astuce
     // pour convertir la chaîne de caractères en nombre
-    const _id:string = this.route.snapshot.params['id'];
+    const _id: string = this.route.snapshot.params['id'];
     console.log("ID = " + _id);
     // On utilise le service assignmentsService pour récupérer l'assignment
     // qui a l'id qu'on vient de récupérer de l'URL
     this.assignmentsService.getAssignment(_id)
-    .subscribe(a => {
-      this.assignmentTransmis = a;
-    });
+      .subscribe(a => {
+        this.assignmentTransmis = a;
+      });
   }
 
   assignmentRendu() {
-    if(!this.assignmentTransmis) return;
+    if (!this.assignmentTransmis) return;
 
     // On utilise le service pour mettre à jour l'assignment
     this.assignmentTransmis.rendu = true;
 
     // on demande au service de faire l'update
     this.assignmentsService.updateAssignment(this.assignmentTransmis)
-    .subscribe(message => {
-      console.log(message);
-      // On re  affiche la liste
-      this.router.navigate(['/home']);
-    });
+      .subscribe(message => {
+        console.log(message);
+        // On re  affiche la liste
+        this.router.navigate(['/home']);
+      });
   }
 
   onDeleteAssignment() {
-    if(!this.assignmentTransmis) return;
-    
+    if (!this.assignmentTransmis) return;
+
     // On utilise le service pour supprimer l'assignment
     this.assignmentsService.deleteAssignment(this.assignmentTransmis)
-    .subscribe(message => {
-      console.log(message);
-      // on cache la vue de détail puisque
-      // l'assignment a été supprimé
-      this.assignmentTransmis = undefined;
-      // On re  affiche la liste
-      this.router.navigate(['/home']);
-    });
+      .subscribe(message => {
+        console.log(message);
+        // on cache la vue de détail puisque
+        // l'assignment a été supprimé
+        this.assignmentTransmis = undefined;
+        // On re  affiche la liste
+        this.router.navigate(['/home']);
+      });
   }
 
+  onCheckboxChange() {
+    if (!this.assignmentTransmis) return;
+
+    this.assignmentTransmis.rendu = !this.assignmentTransmis.rendu;
+    this.assignmentsService.updateAssignment(this.assignmentTransmis)
+      .subscribe(message => {
+        console.log(message);
+      });
+  }
+
+  onNouvelAssignment(event: Assignment) {
+    this.assignmentsService.addAssignment(event).subscribe(message => console.log(message));
+    this.formVisible = false;
+  }
 }

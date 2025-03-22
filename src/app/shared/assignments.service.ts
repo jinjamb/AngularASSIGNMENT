@@ -4,6 +4,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { bdInitialAssignments } from './data';
+import { LoggingService } from './logging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,11 +35,20 @@ assignments:Assignment[] = [];
     return this.http.get<Assignment>(URI);
   }
 
+  getAssignments(): Observable<Assignment[]> {
+    return of(this.assignments);
+  }
+
   addAssignment(assignment:Assignment):Observable<string> {
+    this.assignments.push(assignment);
+    return of("Assignment ajouté !");
+  }
+
+  /*addAssignment(assignment:Assignment):Observable<string> {
     // On ajoute l'assignment passé en paramètres
     // en l'envoyant par POST au backend
      return this.http.post<string>(this.backendURL, assignment);
-  }
+  }*/
 
   updateAssignment(assignment:Assignment):Observable<string> {
     // On met à jour l'assignment passé en paramètres
@@ -88,6 +98,10 @@ assignments:Assignment[] = [];
     // On renvoie un observable qui va nous permettre de savoir
     // quand toutes les insertions sont terminées
     return forkJoin(appelsVersAddAssignment);
+  }
+
+  log(assignmentName: string, action: string) {
+    console.log("Assignment " + assignmentName + " " + action);
   }
  
 }
