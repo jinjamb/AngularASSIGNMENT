@@ -11,7 +11,8 @@ export const routes: Routes = [
     // Pour la page d'accueil
     // On y accèdera avec l'URL : http://localhost:4200/home
     // ou simplement http://localhost:4200
-    { path: '', component: AssignmentsComponent },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent },
     { path: 'home', component: AssignmentsComponent },
     // Pour l'ajout d'assignments
     // On y accèdera avec l'URL : http://localhost:4200/add
@@ -23,9 +24,7 @@ export const routes: Routes = [
     { path: 'assignments/:id', component: AssignmentDetailComponent },
     { path: 'assignment/:id', component: AssignmentDetailComponent },
     // Pour la modification d'un assignment existant
-    { path: 'assignments/:id/edit', component: EditAssignmentComponent, canActivate: [authGuard] },
-    // Pour la connexion
-    { path: 'login', component: LoginComponent },
+    { path: 'assignments/:id/edit', component: EditAssignmentComponent, canActivate: [authGuard] }, 
     // Pour l'erreur 404
     // On y accèdera avec n'importe quelle URL qui ne correspond pas
     // à une route définie
