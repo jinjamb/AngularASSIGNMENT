@@ -8,7 +8,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   let authService = inject(AuthService);
   let router = inject(Router);
 
-  return authService.isAdmin().then(
+  /*return authService.isAdmin().then(
     authentifie => {
       if(authentifie) {
         console.log("Admin !");
@@ -19,5 +19,13 @@ export const authGuard: CanActivateFn = (route, state) => {
         return false;
       }
     }
-  );
+  );*/
+
+  if (authService.isAuthenticated()) {
+    return true;
+  } else {
+      console.log("Not authenticated, redirecting to login");
+      router.navigate(['/login']);
+      return false;
+  }
 };

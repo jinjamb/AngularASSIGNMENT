@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { AssignmentsService } from './shared/assignments.service';
 import { AuthService } from './shared/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,7 @@ import { AuthService } from './shared/auth.service';
     MatListModule
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 
 export class AppComponent {
@@ -35,7 +36,8 @@ export class AppComponent {
 
   constructor(
     private assignmentsService: AssignmentsService,
-    private authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) { }
 
   async toggleAdmin(arg0: any) {
@@ -60,5 +62,10 @@ export class AppComponent {
         console.log("Toutes les données de test ont été insérées");
         window.location.href = '/home';
       });
+  }
+
+  logout() {
+    this.authService.logOut();
+    this.router.navigate(['/login']);
   }
 }

@@ -6,9 +6,16 @@
     </button>
     <span>{{titre}}</span>
     <span class="spacer"></span>
-    <mat-slide-toggle (change)="toggleAdmin(true)">
-      Admin mode
-    </mat-slide-toggle>
+    <button mat-button *ngIf="!authService.isAuthenticated()" [routerLink]="['/login']">
+      <mat-icon>login</mat-icon> Connexion
+    </button>
+    <button mat-button *ngIf="authService.isAuthenticated()" (click)="logout()">
+      <mat-icon>logout</mat-icon> Déconnexion
+    </button>
+    <span *ngIf="authService.getCurrentUser()">
+      Connecté en tant que: {{ authService.getCurrentUser()?.username }}
+      <span *ngIf="authService.getCurrentUser()?.isAdmin">(Admin)</span>
+    </span>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container">

@@ -5,6 +5,7 @@ import { NavigationErrorComponent } from './navigation-error-component/navigatio
 import { AssignmentDetailComponent } from './assignments/assignment-detail/assignment-detail.component';
 import { EditAssignmentComponent } from './assignments/edit-assignment/edit-assignment.component';
 import { authGuard } from './shared/auth.guard';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
     // Pour la page d'accueil
@@ -23,7 +24,8 @@ export const routes: Routes = [
     { path: 'assignment/:id', component: AssignmentDetailComponent },
     // Pour la modification d'un assignment existant
     { path: 'assignments/:id/edit', component: EditAssignmentComponent, canActivate: [authGuard] },
-
+    // Pour la connexion
+    { path: 'login', component: LoginComponent },
     // Pour l'erreur 404
     // On y accèdera avec n'importe quelle URL qui ne correspond pas
     // à une route définie
