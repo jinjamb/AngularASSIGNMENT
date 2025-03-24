@@ -18,7 +18,7 @@ import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-assignments',
-  imports: [CommonModule, RenduDirective,
+  imports: [CommonModule,
     MatListModule, MatDividerModule, MatButtonModule,
     MatInputModule, MatFormFieldModule, FormsModule,
     MatTableModule, MatPaginatorModule,

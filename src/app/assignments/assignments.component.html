@@ -51,14 +51,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="afficheDetail(row)">
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'rendu': row.rendu, 'non-rendu': !row.rendu}" (click)="afficheDetail(row)">
 
-    </tr>
-
-    <!-- Make sure you're passing a valid assignment to afficheDetail -->
-    <tr *ngFor="let assignment of assignments" [ngClass]="{'rendu': assignment.rendu, 'non-rendu': !assignment.rendu}"
-        (click)="afficheDetail(assignment)">
-        <!-- ...existing table columns... -->
     </tr>
 
 </table>

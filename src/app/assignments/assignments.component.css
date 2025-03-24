@@ -1,12 +1,9 @@
-
 .rendu {
-    color:green;
+  background-color: lightgreen;
 }
 
-.nonRendu {
-    background-color: yellow;
-    color:red;
-    border: 2px solid red;
+.non-rendu {
+  background-color: #ffcccb;
 }
 
 table {
