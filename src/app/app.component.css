@@ -14,7 +14,7 @@ button {
 .app-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     width: 100%;
 }
 
@@ -28,13 +28,13 @@ button {
 }
 
 .sidenav-container {
-    height: calc(100% - 64px);
-    margin-top: 64px;
+    height: 100%;
+    margin-top: 63px;
 }
 
 .sidenav {
     width: 250px;
-    padding-top: 10px;
+    height: 100%;
     background-color: rgb(235, 235, 235);
 }
 
