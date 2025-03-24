@@ -7,8 +7,8 @@
 }
 
 table {
-    width: 50%;
-  }
+  width: 50%;
+}
 
   .mat-column-nom {  
     width: 400px;
@@ -33,4 +33,12 @@ table {
     text-align: center;
     font-weight: bold;
   }
-  
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    gap: 20px;
+  }

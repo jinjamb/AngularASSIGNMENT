@@ -5,15 +5,11 @@
     </button>
 </a>
 
-<h3>Ici en liste</h3>
-<p>Nombre total d'assignments dans la base : {{totalDocs}}</p>
 <p>
     Nombre de documents par page : {{limit}}
     <input type="range" min="1" max="100" step="1" value=4 [(ngModel)]="limit" (change)="getAssignments()">
 </p>
-<p>Page courante : {{page}}</p>
-<p>Nombre total de pages : {{totalPages}}</p>
-<p>
+<div class="button-container">
     <button mat-flat-button color="primary" (click)="premierePage()">
         PREMIERE
     </button>
@@ -26,7 +22,7 @@
     <button mat-flat-button color="primary" (click)="dernierePage()">
         DERNIERE
     </button>
-</p>
+</div>
 
 <mat-paginator [length]="totalPages" [pageSize]="limit" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
     (page)="onPageEvent($event)">
